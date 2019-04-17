@@ -35,7 +35,8 @@ for host in hosts:
             found.append(host)
 
 if found:
-    for host in found:
+    uniq = list({v['host']:v for v in found}.values())
+    for host in uniq:
         print()
         pprint.pprint(host)
     sys.exit(0)
