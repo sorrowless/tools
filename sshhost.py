@@ -14,6 +14,8 @@ parser.add_argument('searchstring', type=str, default='.*',
                     help='A string for search')
 parser.add_argument('-j', '--json', action='store_true',
                     help='Print an output in valid JSON format')
+parser.add_argument('-s', '--short', action='store_true',
+                    help='Print only host names from SSH config')
 
 args = parser.parse_args()
 re_string = re.compile(r'(.*)' + args.searchstring + r'(.*)')
@@ -41,7 +43,10 @@ for host in hosts:
             found.append(host)
 
 uniq = list({v['host']: v for v in found}.values())
-if uniq and not args.json:
+if uniq and args.short:
+    for host in uniq:
+        print(host['host'])
+elif uniq and not args.json:
     for host in uniq:
         print()
         pprint.pprint(host)
